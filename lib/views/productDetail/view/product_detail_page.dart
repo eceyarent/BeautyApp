@@ -1,4 +1,6 @@
 import 'package:beauty_app/views/productDetail/model/customProductModel.dart';
+import 'package:beauty_app/widgets/add_button.dart';
+import 'package:beauty_app/widgets/custom_add_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,8 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  int _counterValue = 0;
+
   List<String> images = [
     'assets/images/natural.png',
     'assets/images/natural2.png',
@@ -20,49 +24,108 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: size * 0.05,
+        preferredSize: Size(size.width, size.height * 0.05),
         child: _appBar(),
       ),
-      body: Column(
-        children: [
-          carouselSlider(),
-          littleCards(),
-        ],
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: size.height * 0.95,
+          child: Column(
+            children: [
+              carouselSlider(),
+              littleCards(),
+            ],
+          ),
+        ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-            color: Colors.white),
-        height: 175,
-        width: double.infinity,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Facial Cleanser',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      5,
-                      (index) => Icon(Icons.star),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+              color: Colors.white),
+          height: 175,
+          width: double.infinity,
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 32.0, top: 32.0, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Facial Cleanser',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                  ),
-
-                ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        5,
+                        (index) => const Icon(Icons.star),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            
-          ],
+              Padding(
+                padding: const EdgeInsets.only(left: 32, top: 5, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text('Size: 7.60 ft oz / 225ml'),
+                    Text(
+                      '(132 Rewies)',
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 32, top: 30),
+                child: Row(
+                  children: [
+                    Text(
+                      '\$9.99',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 100),
+                    CustomAddButton(
+                      loading: false,
+                      onChange: (int val) {
+                        setState(() {
+                          _counterValue = val;
+                        });
+                      },
+                      count: _counterValue,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Container(
+                        width: size.width * 0.18,
+                        height: size.width * 0.13,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Cart',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -89,7 +152,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: Image.asset(
                     i,
                     fit: BoxFit.fitWidth,
@@ -131,7 +194,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         color: i == index ? Colors.red : Colors.grey,
-        borderRadius: BorderRadius.all(
+        borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
       ),
@@ -148,7 +211,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Icon(
+          icon: const Icon(
             Icons.catching_pokemon,
           ),
         )
